@@ -19,7 +19,7 @@
                 {{ $error }}<br>
             @endforeach
     </div>
-@elseif( session('succcess') )
+@elseif( session('success') )
     <div class="alert alert-success">
         {{ session('success') }}
     </div>

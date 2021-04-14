@@ -23,7 +23,7 @@ We can check for errors using the $errors->any() method and then loop through er
                 {{ $error }}<br>
             @endforeach
     </div>
-@elseif( session('succcess') )
+    @elseif( session('success') )
     <div class="alert alert-success">
         {{ session('success') }}
     </div>

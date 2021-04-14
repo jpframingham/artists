@@ -23,7 +23,7 @@ Any content which is included inside of these sections will oeverwrite the yield
                 {{ $error }}<br>
             @endforeach
     </div>
-@elseif( session('succcess') )
+    @elseif( session('success') )
     <div class="alert alert-success">
         {{ session('success') }}
     </div>

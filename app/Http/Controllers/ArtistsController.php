@@ -83,10 +83,9 @@ class ArtistsController extends Controller
 
         // Finally, the user is redirected back to the home page with a success message.
         return redirect('/')->with(
-            [
-                'success',
-                'New artist, "' . $artist->name . '" added successfully!'
-            ]);
+            'success',
+            'New artist, "' . $artist->name . '" added successfully!'
+        );
 
     }
 
@@ -166,10 +165,9 @@ class ArtistsController extends Controller
         // Finally, the user is redirected back to the home page with a success message.
         // return redirect(URL::previous())->with(
         return redirect('/')->with(
-        [
-        'success',
-        'The artist, "' . $artist->name . '" was updated successfully!'
-        ]);
+            'success',
+            'The artist, "' . $artist->name . '" was updated successfully!'
+        );
     }
 
     /**
@@ -186,10 +184,10 @@ class ArtistsController extends Controller
         $artist = Artist::where('id', $id)->first();
         $artist->delete();
 
-        return redirect(URL::previous())->with(
-        [
-        'success',
-        'The artist, "' . $artist->name . '" was deleted successfully!'
-        ]);
+        // return redirect(URL::previous())->with(
+        return redirect('/')->with(
+            'success',
+            'The artist, "' . $artist->name . '" was deleted successfully!'
+        );
     }
 }
