@@ -34,23 +34,52 @@ All Laravel forms must have a CSRF (Cross-Site-Request-Forgery) token using the 
 A CSRF token is a unique randomized number which is generated each time  the form is submitted and is stored both in the submitted form data and in a cookie which is stored in the user's browser.
 The CSRF token from the form data is then checked against the CSRF token in the user's browser to ensure that an outside party can not access thje data submitted from the form.
     --}}
+    {{--
     <form action="{{ url('/store') }}" method="post">
-    @csrf
+        @csrf
 
-    <label for="name">Name:</label>
-    <input type="text" name="name" value="" id="name">
+        <label for="name">Name:</label>
+        <input type="text" name="name" value="" id="name">
 
-    <label for="image">Image:</label>
-    <select name="image" id="image">
-        @foreach ( $images as $name => $value )
-            <option value="{{ $value }}">{{ $name }}</option>
-        @endforeach
-    </select>
+        <label for="image">Image:</label>
+        <select name="image" id="image">
+            @foreach ( $images as $name => $value )
+                <option value="{{ $value }}">{{ $name }}</option>
+            @endforeach
+        </select>
 
-    <label for="styles">Styles:</label>
-    <textarea name="styles" rows="3" id="styles"></textarea>
+        <label for="styles">Styles:</label>
+        <textarea name="styles" rows="3" id="styles"></textarea>
 
-    <button type="submit" class="btn">Add Artist</button>
+        <button type="submit" class="btn">Add Artist</button>
     </form>
+    --}}
+
+    {!! Form::open(['url' => '/store', 'files' => true]) !!}
+
+    {{--
+    Laravel Collective automatically assumes that we want to include a CSRF token in our form so it is not necessary to explicitly include it.
+    --}}
+
+    <div class="form-group">
+        {!! Form::label('name', 'Name:') !!}
+        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">    
+        {!! Form::label('image', 'Upload Image:') !!}
+        {!! Form::file('image', ['class' => 'btn btn-dark']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('styles', 'Styles:') !!}
+        {!! Form::textarea('styles', null, ['class' => 'form-control', 'rows' => 5]) !!}
+    </div>
+
+    <div class="form-group">    
+        {!! Form::button('Add Artist', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+    </div>
+    
+    {!! Form::close() !!}
 
 @endsection

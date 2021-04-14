@@ -12,12 +12,15 @@
 @section('content')
 @if ($errors->any())
     <div class="alert alert-danger">
+    
         {{--
         All loops can be used in Blade template using a slightly different syntax. 
-            --}}
-            @foreach ($errors->all() as $error)
-                {{ $error }}<br>
-            @endforeach
+        --}}
+            
+        @foreach ($errors->all() as $error)
+            {{ $error }}<br>
+        @endforeach
+
     </div>
 @elseif( session('success') )
     <div class="alert alert-success">
@@ -34,13 +37,21 @@
 
             {{--
             Because HTML forms do not natively accept PUT or DELETE HTTP methods it is neccessary to use Laravel's method() function in edit and delete forms to "spoof" them. 
-                --}}
+            --}}
+
+            {{--
             <form action="{{ url('/' . $artist->id . '/destroy') }}" method="post">
                 @method('DELETE')
                 @csrf
                 <a href="{{ url('/' . $artist->id . '/edit') }}" class="btn btn-dark">Edit</a>
                 <button type="submit" class="btn btn-dark">Delete</button>
             </form>
+            --}}
+
+            {!! Form::open(['url' => '/' . $artist->id . '/destroy', 'method' => 'delete']) !!}
+                <a href="{{ url('/' . $artist->id . '/edit') }}" class="btn btn-dark">Edit</a>
+                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+            {!! Form::close() !!}
 
         </div>
     @endforeach
