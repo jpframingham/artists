@@ -35,13 +35,20 @@
             {{--
             Because HTML forms do not natively accept PUT or DELETE HTTP methods it is neccessary to use Laravel's method() function in edit and delete forms to "spoof" them. 
                 --}}
+
+            {{--
             <form action="{{ url('/' . $artist->id . '/destroy') }}" method="post">
                 @method('DELETE')
                 @csrf
                 <a href="{{ url('/' . $artist->id . '/edit') }}" class="btn btn-dark">Edit</a>
                 <button type="submit" class="btn btn-dark">Delete</button>
             </form>
+            --}}
 
+            {!! Form::open(['url' => '/' . $artist->id . '/destroy', 'method' => 'delete']) !!}
+                <a href="{{ url('/' . $artist->id . '/edit') }}" class="btn btn-dark">Edit</a>
+                {!! Form::button('Delete', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+            {!! Form::close() !!}
         </div>
     @endforeach
 </div>

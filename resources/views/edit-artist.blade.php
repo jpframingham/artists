@@ -29,6 +29,7 @@ Any content which is included inside of these sections will oeverwrite the yield
     </div>
 @endif
 
+    {{--
     <form action="{{ url('/' . $artist->id . '/update') }}" method="post">
     @method('PUT')
     @csrf
@@ -52,4 +53,27 @@ Any content which is included inside of these sections will oeverwrite the yield
 
     <button type="submit" class="btn">Edit Artist</button>
     </form>
+    --}}
+
+    {!! Form::model($artist, ['url' => '/' . $artist->id . '/update', 'method' => 'put', 'files' => true]) !!}
+        <div class="form-group">
+            {!! Form::label('name', 'Name:') !!}
+            {!! Form::text('name', null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('image', 'Image:') !!}
+            {!! Form::text('image', ['class' => 'btn btn-dark']) !!}
+        </div>
+
+        {!! Form::hidden('old_image', $artist->image) !!}
+
+        <div class="form-group">
+            {!! Form::label('styles', 'Styles:') !!}
+            {!! Form::textarea('name', null, ['class' => 'form-control', 'rows' => 5]) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::button('Edit Artist', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+        </div>
+    {!! Form::close() !!}
+
 @endsection
