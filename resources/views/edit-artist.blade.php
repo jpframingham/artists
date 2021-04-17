@@ -56,24 +56,36 @@ Any content which is included inside of these sections will oeverwrite the yield
     --}}
 
     {!! Form::model($artist, ['url' => '/' . $artist->id . '/update', 'method' => 'put', 'files' => true]) !!}
-        <div class="form-group">
-            {!! Form::label('name', 'Name:') !!}
-            {!! Form::text('name', null, ['class' => 'form-control']) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::label('image', 'Image:') !!}
-            {!! Form::text('image', ['class' => 'btn btn-dark']) !!}
-        </div>
+
+    {{-- 
+    Laravel Collective automatically assumes that we want to include a CSRF token in our form so it is not necessary to explicitly include it.
+    --}}
+
+    <div class="form-group">
+        {!! Form::label('name', 'Name:') !!}
+        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('image', 'Upload Image:') !!}
+        {!! Form::file('image', ['class' => 'btn btn-dark']) !!}
+    </div>
+
+        {{-- 
+        Because we are accepting images using a file() upload input, it is necessary for us to pass the value of the old existing image back to the controller using a hidden() field. Laravel Collective can not set this for us automatically because file() inputs ignore set value attributes.
+        --}}
 
         {!! Form::hidden('old_image', $artist->image) !!}
 
-        <div class="form-group">
-            {!! Form::label('styles', 'Styles:') !!}
-            {!! Form::textarea('name', null, ['class' => 'form-control', 'rows' => 5]) !!}
-        </div>
-        <div class="form-group">
-            {!! Form::button('Edit Artist', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
-        </div>
+    <div class="form-group">
+        {!! Form::label('styles', 'Styles:') !!}
+        {!! Form::textarea('styles', null, ['class' => 'form-control', 'rows' => 5]) !!}
+    </div>
+
+    <div class="form-group">    
+        {!! Form::button('Edit Artist', ['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+    </div>
+
     {!! Form::close() !!}
 
 @endsection
