@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ArtistRequest;
 use App\Models\Artist; # UPDATE ME W12
 use URL;
 
@@ -59,23 +60,45 @@ class ArtistsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArtistRequest $request)
     {
 
         // The store method will be used to actually save data from the database once it is collected.
         // It will validate the form using the validate() method of the request object.
 
-        $request->validate([
-            'name' => 'required|max:255',
-            'image' => 'required|max:255',
-            'styles' => 'required'
-        ]);
+        // $request->validate([
+        //     'name' => 'required|max:255',
+        //     'image' => 'required|max:255',
+        //     'styles' => 'required'
+        // ]);
 
         // Then we will create a new instance of the Artist class and then set each property of the artist object to be equal to the corresponding property of the request object which was collected from the form.
         $artist = new Artist;
 
         $artist->name = $request->name;
-        $artist->image = $request->image;
+
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $image_name = strtolower(str_replace(' ', '_', $request->name));
+
+            $image_time = time();
+
+            $image_extension = '.' . $image->getClientOriginalExtension();
+
+            $full_image_name = $image_name . '_' . $image_time . $image_extension;
+
+            $image_path = date('Y/m/d');
+
+            $destination_path = public_path('/images/' . $image_path);
+
+            $image->move($destination_path, $full_image_name);
+
+            $artist->image = $image_path . '/' . $full_image_name;
+            
+        }
+
         $artist->styles = $request->styles;
 
         // The artist object is then saved and stored in the database using the model's save() method.
@@ -141,22 +164,47 @@ class ArtistsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArtistRequest $request, $id)
     {
         // The update method is very similar to the store method except that it selects a specific artist and reassigns its properties instead of creating a new instance of the Artist class.
 
-        $request->validate(
-        [
-        'name' => 'required|max:255',
-        'image' => 'required|max:255',
-        'styles' => 'required'
-        ]);
+        // $request->validate(
+        // [
+        // 'name' => 'required|max:255',
+        // 'image' => 'required|max:255',
+        // 'styles' => 'required'
+        // ]);
 
         // $artist = Artist::get('id', $id)->first();
         $artist = Artist::where('id', $id)->first();
 
         $artist->name = $request->name;
-        $artist->image = $request->image;
+        if ($request->hasFile('image')) {
+
+            $image = $request->file('image');
+
+            $image_name = strtolower(str_replace(' ', '_', $request->name));
+
+            $image_time = time();
+
+            $image_extension = '.' . $image->getClientOriginalExtension();
+
+            $full_image_name = $image_name . '_' . $image_time . $image_extension;
+
+            $image_path = date('Y/m/d');
+
+            $destination_path = public_path('/images/' . $image_path);
+
+            $image->move($destination_path, $full_image_name);
+
+            $artist->image = $image_path . '/' . $full_image_name;
+            
+        } else {
+
+            $artist->image = $request->old_image;
+            
+        }
+
         $artist->styles = $request->styles;
 
         // The artist object is then saved and stored in the database using the model's save() method.

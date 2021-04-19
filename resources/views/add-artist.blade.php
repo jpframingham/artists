@@ -1,6 +1,7 @@
 {{-- 
 To specify a parent template to base a child template on, use the extends() function with a string with the path to the parent template as a parameter.
 --}}
+
 @extends('layouts.base')
 
 {{-- 
@@ -9,11 +10,13 @@ Any content which is included inside of these sections will oeverwrite the yield
 --}}
 
 @section('content')
+
 {{-- 
 If, if else and if else if statements use a different syntax in Blade templates.
 They require an @ symbol at the beginning and a closing tag.
 We can check for errors using the $errors->any() method and then loop through error messages using the $errors->all() method.
-    --}}
+--}}
+
 @if ($errors->any())
     <div class="alert alert-danger">
         {{--
@@ -32,9 +35,12 @@ We can check for errors using the $errors->any() method and then loop through er
 {{-- 
 All Laravel forms must have a CSRF (Cross-Site-Request-Forgery) token using the @csrf statement
 A CSRF token is a unique randomized number which is generated each time  the form is submitted and is stored both in the submitted form data and in a cookie which is stored in the user's browser.
+
 The CSRF token from the form data is then checked against the CSRF token in the user's browser to ensure that an outside party can not access thje data submitted from the form.
-    --}}
-    <form action="{{ url('/store') }}" method="post">
+--}}
+
+{{--
+<form action="{{ url('/store') }}" method="post">
     @csrf
 
     <label for="name">Name:</label>
@@ -51,6 +57,30 @@ The CSRF token from the form data is then checked against the CSRF token in the 
     <textarea name="styles" rows="3" id="styles"></textarea>
 
     <button type="submit" class="btn">Add Artist</button>
-    </form>
+</form>
+--}}
+
+{!! Form::open(['url' => '/store', 'files' => true]) !!}
+
+    <div class="form-group">
+        {!! Form::label('name', 'Name:') !!}
+        {!! Form::text('name', null, ['class' => 'form-control']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('image', 'Upload Image:') !!}
+        {!! Form::file('image', ['class' => 'btn btn-dark']) !!}
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('styles', 'Styles:') !!}
+        {!! Form::textarea('styles', null, ['class' => 'form-control', 'rows' => 5]) !!}
+    </div>
+
+    <div class="form-group">    
+        {!! Form::button('<span class="fa fa-plus"></span>&nbsp;Add Artist',['type' => 'submit', 'class' => 'btn btn-dark']) !!}
+    </div>
+
+{!! Form::close() !!}
 
 @endsection
