@@ -18,8 +18,8 @@
     <div class="form-group">
       {!! Form::label('artist_id', 'Artworks:') !!}
       <select name="artist_id">
-        @foreach ($artists as $artist_num => $artist)
-          <option value="{{ $artist->id }}" @if ($artist->id == $artwork->artist->id) selected @endif>{{ $artist->name }}</option>
+        @foreach ($artists as $artist)
+          <option value="{{ $artist->id }}" @if ($artist->id == $artwork->artist['id']) selected @endif >{{ $artist->name }}</option>
         @endforeach
       </select>
     </div>
