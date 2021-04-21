@@ -4,9 +4,9 @@
   <div class="row">
     @foreach ($artists as $artist_num => $artist)
       <div class="col-3">
-        <h2>{{ $artist->name }}</h2>
-        <img src="{{ url('/images/' . $artist->image) }}" alt="{{ $artist->name }}">
-        <p>Styles: {{ $artist->styles }}</p>
+        <h2 class="mb-3">{{ $artist->name }}</h2>
+        <img class="mb-4" src="{{ url('/images/' . $artist->image) }}" alt="{{ $artist->name }}">
+        <p><b>Styles:</b></br>{{ $artist->styles }}</p>
 
 
         {!! Form::open(['action' => ['App\Http\Controllers\ArtistsController@destroy', $artist->id], 'method' => 'delete']) !!}
