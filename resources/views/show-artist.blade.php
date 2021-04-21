@@ -20,7 +20,7 @@
     <div class="col-6">
       <div class="row">
       @foreach ($artist->artworks as $artwork)
-        <div class="col-3">
+        <div class="col-4">
           <img class="mb-2" src="{{ url('/images/' . $artwork->image) }}" alt="{{ $artwork->title }}">
           <h3 class="h6">{{ $artwork->title }}</h3>
         </div>

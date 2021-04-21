@@ -3,7 +3,7 @@
 @section('content')
   {!! Form::open(['action' => 'App\Http\Controllers\ArtworkController@store', 'files' => true]) !!}
     <div class="form-group">
-      {!! Form::label('title', 'Title:') !!}
+      {!! Form::label('title', 'Artwork Title:') !!}
       {!! Form::text('title', null, ['class' => 'form-control']) !!}
 
       {!! Form::label('image', 'Upload Image:') !!}

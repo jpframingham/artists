@@ -58,8 +58,8 @@
         --}}
 
         <footer>
-            <p>You're on the <em>{{ $title }}</em> page</br>
-            <small>Copyright &copy; {{ date('Y') }} Seneca College. All rights reserved.<small></p>
+            <p><small>Copyright &copy; 1983-{{ date('Y') }} Seneca College. All rights reserved.</small></p>
+            <p><small>This web application was created by Seneca College for the purpose of teaching. All information including products, services and people associated with it are fictitious. Any resemblance to real brands, products, services or people is coincidental. The information presented is not representative of actual products or services on the market.</small></p>
         </footer>
     </body>
 

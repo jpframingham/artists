@@ -10517,6 +10517,11 @@ footer {
     padding: 20px;
 }
 
+footer * {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
 nav {
     background: rgba(56, 9, 1, 0.6);
 }
