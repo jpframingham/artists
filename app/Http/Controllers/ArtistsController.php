@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArtistRequest;
 use App\Models\Artist; # UPDATE ME W12
+use App\Models\Artwork;
 use URL;
 
 class ArtistsController extends Controller
@@ -19,7 +20,8 @@ class ArtistsController extends Controller
         // Index is for displaying all of the artists in a list
         // The index method uses a static get method of the mdoel to select all artists from the database.
         // Then it returns a view and passes variables for the title and the artists to it.
-        $artists = Artist::get();
+        $artists = Artist::with('artworks')->get();
+
         return view('view-artists',
         [
             'title' => 'Artists',
@@ -36,21 +38,9 @@ class ArtistsController extends Controller
     {
         // The create method is used to display the form the user would use to add a new item to the database.
         // It will list an array of image files, and return a view and pass variables for the title and the image files to it.
-        $images =
-        [
-        'Leonardo da Vinci' => 'da-vinci.jpg',
-        'Walt Disney' => 'disney.jpg',
-        'Frida Kahlo' => 'kahlo.jpg',
-        'Pablo Picasso' => 'picasso.jpg',
-        'Bob Ross' => 'ross.jpg',
-        'Charles M.Schulz' => 'schulz.jpg',
-        'Bill Watterson' => 'watterson.jpg',
-        'Vincent van Goch' => 'van-goch.jpg'
-        ];
         return view('add-artist',
         [
-            'title' => 'Add Artist',
-            'images' => $images
+            'title' => 'Add Artist'
         ]);
     }
 
@@ -74,27 +64,50 @@ class ArtistsController extends Controller
 
         // Then we will create a new instance of the Artist class and then set each property of the artist object to be equal to the corresponding property of the request object which was collected from the form.
         $artist = new Artist;
-
         $artist->name = $request->name;
-
+        
+        /**
+         * Since we using an image upload instead of a select field, we need to write some code to process the image upload.
+         * 
+         * First we need to check if the submitted form data includes an image file using the hasFile method.
+         */
         if ($request->hasFile('image')) {
-
+            
+            // Then we can save the file as a variable using the file() method.
             $image = $request->file('image');
 
+            /**
+             * We can format the provided artist name to reate an image name by replacing spaces with underscores and changing capital letters to lowercase.
+             */
             $image_name = strtolower(str_replace(' ', '_', $request->name));
 
+            /**
+             * It is common convention to include a timestamp in file names to prevent files with the same names from conflicting. We can do this using the time() function.
+             */
             $image_time = time();
 
+            /**
+             * Then we can collect the original file extension of the uploaded image and add it to the end of our new file name.
+             */
             $image_extension = '.' . $image->getClientOriginalExtension();
-
             $full_image_name = $image_name . '_' . $image_time . $image_extension;
 
+            /**
+             * We can save the image in a path with folders that correspond to today's date to further keep images organized.
+             */
             $image_path = date('Y/m/d');
 
+            /**
+             * We need to define a destination path for the file to be moved to using the public_path() function.
+             */
             $destination_path = public_path('/images/' . $image_path);
 
+            // Then we need to move the file using the move() method.
             $image->move($destination_path, $full_image_name);
 
+            /**
+             * We need to set the $image property of the artist to equal the image path concatenated with the full name of the image.
+             */
             $artist->image = $image_path . '/' . $full_image_name;
             
         }
@@ -120,7 +133,11 @@ class ArtistsController extends Controller
      */
     public function show($id)
     {
-        //
+        $artist = Artist::with('artworks')->find($id);
+        return view('show-artist', [
+            'artist' => $artist,
+            'title' => $artist->name
+        ]);
     }
 
     /**
@@ -134,27 +151,34 @@ class ArtistsController extends Controller
         // The edit method is very similar to the create method excecpt that it takes in an ID from the route, selects artists from the database if their ID matches, then selects the first one.
         // The artist is then passed to the view so that its properties can be used in the form to display their currently existing data.
         // $artist = Artist::get('id', $id)->first();
-        $artist = Artist::where('id', $id)->first();
+        // $artist = Artist::where('id', $id)->first();
 
         // FINISHED W11 HERE
 
-        $images =
-        [
-        'Leonardo da Vinci' => 'da-vinci.jpg',
-        'Walt Disney' => 'disney.jpg',
-        'Frida Kahlo' => 'kahlo.jpg',
-        'Pablo Picasso' => 'picasso.jpg',
-        'Bob Ross' => 'ross.jpg',
-        'Charles M.Schulz' => 'schulz.jpg',
-        'Bill Watterson' => 'watterson.jpg',
-        'Vincent van Goch' => 'van-goch.jpg'
-        ];
-        return view('edit-artist',
-        [
-        'artist' => $artist,
-        'title' => 'Edit ' . $artist->name,
-        'images' => $images
+        // $images =
+        // [
+        // 'Leonardo da Vinci' => 'da-vinci.jpg',
+        // 'Walt Disney' => 'disney.jpg',
+        // 'Frida Kahlo' => 'kahlo.jpg',
+        // 'Pablo Picasso' => 'picasso.jpg',
+        // 'Bob Ross' => 'ross.jpg',
+        // 'Charles M.Schulz' => 'schulz.jpg',
+        // 'Bill Watterson' => 'watterson.jpg',
+        // 'Vincent van Goch' => 'van-goch.jpg'
+        // ];
+        // return view('edit-artist',
+        // [
+        // 'artist' => $artist,
+        // 'title' => 'Edit ' . $artist->name,
+        // 'images' => $images
+        // ]);
+
+        $artist = Artist::with('artworks')->find($id);
+        return view('edit-artist', [
+            'artist' => $artist,
+            'title' => 'Edit ' . $artist->name,
         ]);
+
     }
 
     /**
@@ -176,7 +200,7 @@ class ArtistsController extends Controller
         // ]);
 
         // $artist = Artist::get('id', $id)->first();
-        $artist = Artist::where('id', $id)->first();
+        $artist = Artist::find($id);
 
         $artist->name = $request->name;
         if ($request->hasFile('image')) {
@@ -202,7 +226,7 @@ class ArtistsController extends Controller
         } else {
 
             $artist->image = $request->old_image;
-            
+
         }
 
         $artist->styles = $request->styles;
@@ -229,11 +253,11 @@ class ArtistsController extends Controller
         // The destroy method is fairly simple. It just selects an artist with an ID that matches the one which was passed to the method in the route.
         // Then it uses the delete() method to delete it and redirects back to the previous page using the URL class and the previous() method.
         // $artist = Artist::get('id', $id)->first();
-        $artist = Artist::where('id', $id)->first();
+        $artist = Artist::find($id);
         $artist->delete();
 
         // return redirect(URL::previous())->with(
-        return redirect('/')->with(
+        return redirect(URL::previous())->with(
             'success',
             'The artist, "' . $artist->name . '" was deleted successfully!'
         );

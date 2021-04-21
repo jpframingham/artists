@@ -1,20 +1,5 @@
 @extends('layouts.base')
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        {{--
-        All loops can be used in Blade template using a slightly different syntax. 
-            --}}
-            @foreach ($errors->all() as $error)
-                {{ $error }}<br>
-            @endforeach
-    </div>
-    @elseif( session('success') )
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
 @section('content')
   <div class="row">
     @foreach ($artists as $artist_num => $artist)

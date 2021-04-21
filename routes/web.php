@@ -20,12 +20,20 @@ use Illuminate\Support\Facades\Route;
 
 // UPDATE PATH TO App\Http\Controllers IN W12
 
-Route::get('/', 'App\Http\Controllers\ArtistsController@index');
+// Route::get('/', 'App\Http\Controllers\ArtistsController@index');
 
-Route::get('/add', 'App\Http\Controllers\ArtistsController@create');
-Route::post('/store', 'App\Http\Controllers\ArtistsController@store');
+// Route::get('/add', 'App\Http\Controllers\ArtistsController@create');
+// Route::post('/store', 'App\Http\Controllers\ArtistsController@store');
 
-Route::get('/{id}/edit/', 'App\Http\Controllers\ArtistsController@edit');
-Route::put('/{id}/update/', 'App\Http\Controllers\ArtistsController@update');
+// Route::get('/{id}/edit/', 'App\Http\Controllers\ArtistsController@edit');
+// Route::put('/{id}/update/', 'App\Http\Controllers\ArtistsController@update');
 
-Route::delete('/{id}/destroy/', 'App\Http\Controllers\ArtistsController@destroy');
+// Route::delete('/{id}/destroy/', 'App\Http\Controllers\ArtistsController@destroy');
+
+Route::resources([
+    '/' => 'App\Http\Controllers\ArtistsController',
+    'artists' => 'App\Http\Controllers\ArtistsController',
+    'bios' => 'App\Http\Controllers\BioController',
+    'artworks' => 'App\Http\Controllers\ArtworkController',
+    'galleries' => 'App\Http\Controllers\GalleryController'
+]);

@@ -26,6 +26,26 @@
 
     <div class="content-wrapper">
         <div class="container">
+
+            <div class="row">
+                <div class="col-12 mb-3">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            {{--
+                            All loops can be used in Blade template using a slightly different syntax. 
+                                --}}
+                                @foreach ($errors->all() as $error)
+                                    {{ $error }}<br>
+                                @endforeach
+                        </div>
+                        @elseif( session('success') )
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             @yield('content')
         </div>
     </div>

@@ -26,7 +26,7 @@ class ArtistRequest extends FormRequest
         return [
             'name' => 'required|regex:([a-zA-Z\-. ]+)|max:255',
             'image' => 'required_without:old_image|nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:8192',
-            'styles' => 'required',
+            'styles' => 'required'
         ];
     }
 }
